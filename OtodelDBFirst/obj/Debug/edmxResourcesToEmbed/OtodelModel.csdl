@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OtodelModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Bus">
+    <Key>
+      <PropertyRef Name="BusPlate" />
+    </Key>
+    <Property Name="BusPlate" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SeatCount" Type="Int32" Nullable="false" />
+    <Property Name="Wifi" Type="Boolean" Nullable="false" />
+    <Property Name="TV" Type="Boolean" Nullable="false" />
+    <Property Name="Power" Type="Boolean" Nullable="false" />
+    <Property Name="SeatType" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Expeditions" Relationship="Self.FK_dbo_Expeditions_dbo_Buses_Bus_BusPlate" FromRole="Buses" ToRole="Expeditions" />
+  </EntityType>
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="CityID" />
+    </Key>
+    <Property Name="CityID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CityName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Expeditions" Relationship="Self.FK_dbo_Expeditions_dbo_Cities_CityTakeOff_CityID" FromRole="Cities" ToRole="Expeditions" />
+    <NavigationProperty Name="Expeditions1" Relationship="Self.FK_dbo_Expeditions_dbo_Cities_CityToGo_CityID" FromRole="Cities" ToRole="Expeditions" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Tickets" Relationship="Self.FK_dbo_Tickets_dbo_Customers_Customer_CustomerID" FromRole="Customers" ToRole="Tickets" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EmployeeMail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EmployeeRank" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Expedition">
+    <Key>
+      <PropertyRef Name="ExpeditionID" />
+    </Key>
+    <Property Name="ExpeditionID" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TakeOffTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CameTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Price" Type="Single" Nullable="false" />
+    <Property Name="ExpeditionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Bus_BusPlate" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+    <Property Name="CityTakeOff_CityID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CityToGo_CityID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Bus" Relationship="Self.FK_dbo_Expeditions_dbo_Buses_Bus_BusPlate" FromRole="Expeditions" ToRole="Buses" />
+    <NavigationProperty Name="City" Relationship="Self.FK_dbo_Expeditions_dbo_Cities_CityTakeOff_CityID" FromRole="Expeditions" ToRole="Cities" />
+    <NavigationProperty Name="City1" Relationship="Self.FK_dbo_Expeditions_dbo_Cities_CityToGo_CityID" FromRole="Expeditions" ToRole="Cities" />
+    <NavigationProperty Name="Tickets" Relationship="Self.FK_dbo_Tickets_dbo_Expeditions_Expedition_ExpeditionID" FromRole="Expeditions" ToRole="Tickets" />
+  </EntityType>
+  <EntityType Name="Ticket">
+    <Key>
+      <PropertyRef Name="TicketID" />
+    </Key>
+    <Property Name="TicketID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SeatNo" Type="Int32" Nullable="false" />
+    <Property Name="TicketDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Customer_CustomerID" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="Expedition_ExpeditionID" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Customer" Relationship="Self.FK_dbo_Tickets_dbo_Customers_Customer_CustomerID" FromRole="Tickets" ToRole="Customers" />
+    <NavigationProperty Name="Expedition" Relationship="Self.FK_dbo_Tickets_dbo_Expeditions_Expedition_ExpeditionID" FromRole="Tickets" ToRole="Expeditions" />
+  </EntityType>
+  <Association Name="FK_dbo_Expeditions_dbo_Buses_Bus_BusPlate">
+    <End Role="Buses" Type="Self.Bus" Multiplicity="0..1" />
+    <End Role="Expeditions" Type="Self.Expedition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Buses">
+        <PropertyRef Name="BusPlate" />
+      </Principal>
+      <Dependent Role="Expeditions">
+        <PropertyRef Name="Bus_BusPlate" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Expeditions_dbo_Cities_CityTakeOff_CityID">
+    <End Role="Cities" Type="Self.City" Multiplicity="0..1" />
+    <End Role="Expeditions" Type="Self.Expedition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cities">
+        <PropertyRef Name="CityID" />
+      </Principal>
+      <Dependent Role="Expeditions">
+        <PropertyRef Name="CityTakeOff_CityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Expeditions_dbo_Cities_CityToGo_CityID">
+    <End Role="Cities" Type="Self.City" Multiplicity="0..1" />
+    <End Role="Expeditions" Type="Self.Expedition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cities">
+        <PropertyRef Name="CityID" />
+      </Principal>
+      <Dependent Role="Expeditions">
+        <PropertyRef Name="CityToGo_CityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Tickets_dbo_Customers_Customer_CustomerID">
+    <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="Tickets">
+        <PropertyRef Name="Customer_CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Tickets_dbo_Expeditions_Expedition_ExpeditionID">
+    <End Role="Expeditions" Type="Self.Expedition" Multiplicity="0..1" />
+    <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Expeditions">
+        <PropertyRef Name="ExpeditionID" />
+      </Principal>
+      <Dependent Role="Tickets">
+        <PropertyRef Name="Expedition_ExpeditionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OtodelContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+    <EntitySet Name="Buses" EntityType="Self.Bus" />
+    <EntitySet Name="Cities" EntityType="Self.City" />
+    <EntitySet Name="Customers" EntityType="Self.Customer" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Expeditions" EntityType="Self.Expedition" />
+    <EntitySet Name="Tickets" EntityType="Self.Ticket" />
+    <AssociationSet Name="FK_dbo_Expeditions_dbo_Buses_Bus_BusPlate" Association="Self.FK_dbo_Expeditions_dbo_Buses_Bus_BusPlate">
+      <End Role="Buses" EntitySet="Buses" />
+      <End Role="Expeditions" EntitySet="Expeditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Expeditions_dbo_Cities_CityTakeOff_CityID" Association="Self.FK_dbo_Expeditions_dbo_Cities_CityTakeOff_CityID">
+      <End Role="Cities" EntitySet="Cities" />
+      <End Role="Expeditions" EntitySet="Expeditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Expeditions_dbo_Cities_CityToGo_CityID" Association="Self.FK_dbo_Expeditions_dbo_Cities_CityToGo_CityID">
+      <End Role="Cities" EntitySet="Cities" />
+      <End Role="Expeditions" EntitySet="Expeditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Tickets_dbo_Customers_Customer_CustomerID" Association="Self.FK_dbo_Tickets_dbo_Customers_Customer_CustomerID">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Tickets" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Tickets_dbo_Expeditions_Expedition_ExpeditionID" Association="Self.FK_dbo_Tickets_dbo_Expeditions_Expedition_ExpeditionID">
+      <End Role="Expeditions" EntitySet="Expeditions" />
+      <End Role="Tickets" EntitySet="Tickets" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
